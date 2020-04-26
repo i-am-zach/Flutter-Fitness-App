@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "802846688300",
+    "firebase_url": "https://personal-fitness-app.firebaseio.com",
+    "project_id": "personal-fitness-app",
+    "storage_bucket": "personal-fitness-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:802846688300:android:93219459df2448327f3d89",
+        "android_client_info": {
+          "package_name": "com.zachlefko.fitness"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "802846688300-r1av4te1j4mqv3jka0ajfkg74d07hep1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.zachlefko.fitness",
+            "certificate_hash": "d1875347f67b9440fac8a1f566dab8a70fc92bbb"
+          }
+        },
+        {
+          "client_id": "802846688300-dtm4us3ok6r7j0t1423kp15d9lb5e82u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyByWvRA4LQGDiTlBWGl7oNmgQnpBY2K4io"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "802846688300-dtm4us3ok6r7j0t1423kp15d9lb5e82u.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "802846688300-nsct94au8vrgte9pfunekqsa56gbm4a8.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.zachlefko.fitness"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
