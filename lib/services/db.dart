@@ -135,12 +135,18 @@ class ReportService {
   logCompletedRoutine(User user, Routine routine) async {
     DocumentReference reportRef = _db.collection('reports').document(user.uid);
     DocumentSnapshot snap = await reportRef.get();
-
-    Report report = Report.fromData(snap.data);
-    CompletionReport completionReport = CompletionReport(
-        logged: Timestamp.fromDate(DateTime.now()), routine: routine);
-    report.completed.add(completionReport);
-    reportRef.setData(report.deserialize());
+    if (snap.data == null) {
+      CompletionReport completionReport = CompletionReport(
+          logged: Timestamp.fromDate(DateTime.now()), routine: routine);
+      Report report = new Report(uid: user.uid, completed: [completionReport]);
+      reportRef.setData(report.deserialize());
+    } else {
+      Report report = Report.fromData(snap.data);
+      CompletionReport completionReport = CompletionReport(
+          logged: Timestamp.fromDate(DateTime.now()), routine: routine);
+      report.completed.add(completionReport);
+      reportRef.setData(report.deserialize());
+    }
   }
 
   removeCompletedRoutine(User user, Timestamp timestamp) async {

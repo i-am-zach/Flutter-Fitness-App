@@ -17,6 +17,12 @@ class ProgressTab extends StatelessWidget {
     return StreamBuilder(
       stream: reportStream,
       builder: (context, snap) {
+        int streak;
+        int totalMinutes;
+        int weeklyMinutes;
+        int dailyMinutes;
+        Routine favoriteRoutine;
+        Function routineOnTap;
         if (snap.hasData) {
           Report report = snap.data;
           final ReportAggregation _reportTool =
@@ -24,137 +30,143 @@ class ProgressTab extends StatelessWidget {
           List<CompletionReport> recent =
               _reportService.recentReports(report, 24);
 
-          int totalMinutes = _reportTool.totalMinutes();
-          int weeklyMinutes = _reportTool.minutesBy(Duration(days: 7));
-          int dailyMinutes = _reportTool.minutesBy(Duration(hours: 24));
-          int streak = _reportTool.streak();
-          Routine favoriteRoutine = _reportTool.favoriteRoutine();
+          totalMinutes = _reportTool.totalMinutes();
+          weeklyMinutes = _reportTool.minutesBy(Duration(days: 7));
+          dailyMinutes = _reportTool.minutesBy(Duration(hours: 24));
+          streak = _reportTool.streak();
+          favoriteRoutine = _reportTool.favoriteRoutine();
 
-          final Color _secondaryColor = Colors.pink;
-          final Color _primaryColor = Colors.pink[400];
-
-          return Stack(children: [
-            Positioned(
-                top: 0,
-                left: 0,
-                child: Stack(
-                  children: <Widget>[
-                    Container(
-                      height: MediaQuery.of(context).size.height / 3.0,
-                      width: MediaQuery.of(context).size.width * 2,
-                      color: _secondaryColor,
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(top: 75),
-                      height: MediaQuery.of(context).size.height / 3.0,
-                      width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                          color: _secondaryColor,
-                          borderRadius: BorderRadius.circular(50)),
-                    )
-                  ],
-                )),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              child: Column(children: [
-                Expanded(
-                  flex: 1,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text("${user.name ?? 'Guest'}",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 44))
-                    ],
+          routineOnTap = () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => WorkoutScreen(
+                    routine: favoriteRoutine,
                   ),
+                ));
+          };
+        } else {
+          streak = 0;
+          totalMinutes = 0;
+          dailyMinutes = 0;
+          favoriteRoutine = Routine(title: "No favorite routine");
+          routineOnTap = () {};
+        }
+
+        final Color _secondaryColor = Colors.pink;
+        final Color _primaryColor = Colors.pink[400];
+
+        return Stack(children: [
+          Positioned(
+              top: 0,
+              left: 0,
+              child: Stack(
+                children: <Widget>[
+                  Container(
+                    height: MediaQuery.of(context).size.height / 3.0,
+                    width: MediaQuery.of(context).size.width * 2,
+                    color: _secondaryColor,
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(top: 75),
+                    height: MediaQuery.of(context).size.height / 3.0,
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                        color: _secondaryColor,
+                        borderRadius: BorderRadius.circular(50)),
+                  )
+                ],
+              )),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            child: Column(children: [
+              Expanded(
+                flex: 1,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text("${user.name ?? 'Guest'}",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 44))
+                  ],
                 ),
-                Expanded(
-                  flex: 1,
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: <Widget>[
-                      Expanded(
-                        flex: 1,
-                        child: IconCard(
+              ),
+              Expanded(
+                flex: 1,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    Expanded(
+                      flex: 1,
+                      child: IconCard(
+                        icon: FractionallySizedBox(
+                          widthFactor: 0.8,
+                          child: Icon(FontAwesomeIcons.fire,
+                              size: 100, color: Colors.pink),
+                        ),
+                        title: "Streak",
+                        subtitle: "$streak days in a row!",
+                      ),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: IconCard(
+                        icon: Text("$dailyMinutes",
+                            style: TextStyle(
+                              fontSize: 90,
+                              fontWeight: FontWeight.bold,
+                              color: _primaryColor,
+                            )),
+                        title: "Minutes Today",
+                        subtitle: "Keep going!",
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                flex: 1,
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      flex: 1,
+                      child: IconCard(
+                        icon: Text("$totalMinutes",
+                            style: TextStyle(
+                              fontSize: 90,
+                              fontWeight: FontWeight.bold,
+                              color: _primaryColor,
+                            )),
+                        title: "Total Minutes",
+                        subtitle: "Nice work!",
+                      ),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: IconCard(
                           icon: FractionallySizedBox(
                             widthFactor: 0.8,
-                            child: Icon(FontAwesomeIcons.fire,
-                                size: 100, color: Colors.pink),
+                            child: Image(
+                                color: _primaryColor,
+                                image: AssetImage(
+                                    "assets/icons/trimmed_dumbell@3x.png")),
                           ),
-                          title: "Streak",
-                          subtitle: "$streak days in a row!",
-                        ),
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: IconCard(
-                          icon: Text("$dailyMinutes",
-                              style: TextStyle(
-                                fontSize: 90,
-                                fontWeight: FontWeight.bold,
-                                color: _primaryColor,
-                              )),
-                          title: "Minutes Today",
-                          subtitle: "Keep going!",
-                        ),
-                      ),
-                    ],
-                  ),
+                          title: "Favorite Workout",
+                          subtitle: "${favoriteRoutine.title}",
+                          onTap: routineOnTap),
+                    ),
+                  ],
                 ),
-                Expanded(
-                  flex: 1,
-                  child: Row(
-                    children: <Widget>[
-                      Expanded(
-                        flex: 1,
-                        child: IconCard(
-                          icon: Text("$totalMinutes",
-                              style: TextStyle(
-                                fontSize: 90,
-                                fontWeight: FontWeight.bold,
-                                color: _primaryColor,
-                              )),
-                          title: "Total Minutes",
-                          subtitle: "Nice work!",
-                        ),
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: IconCard(
-                            icon: FractionallySizedBox(
-                              widthFactor: 0.8,
-                              child: Image(
-                                  color: _primaryColor,
-                                  image: AssetImage(
-                                      "assets/icons/trimmed_dumbell@3x.png")),
-                            ),
-                            title: "Favorite Workout",
-                            subtitle: "${favoriteRoutine.title}",
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => WorkoutScreen(
-                                      routine: favoriteRoutine,
-                                    ),
-                                  ));
-                            }),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 50,
-                )
-              ]),
-            ),
-          ]);
-        } else {
-          return LoadingScreen();
-        }
+              ),
+              SizedBox(
+                height: 50,
+              )
+            ]),
+          ),
+        ]);
       },
     );
   }
