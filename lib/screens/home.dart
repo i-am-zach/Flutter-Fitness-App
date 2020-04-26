@@ -18,7 +18,7 @@ class HomeScreen extends StatelessWidget {
             title: "Loading data",
             author: "",
             description: "",
-            estimatedTime: "",
+            estimatedTime: 30,
             exercises: [])
       ];
     }
@@ -69,8 +69,10 @@ class RoutineCard extends StatelessWidget {
                   builder: (context) => WorkoutScreen(routine: routine)));
         },
         child: NeumorphicCard(
-          padding: EdgeInsets.all(16.0),
-          borderRadius: BorderRadius.circular(15),
+          neumorphicData: NeumorphicData(
+              level: 10,
+              padding: EdgeInsets.all(16),
+              borderRadius: BorderRadius.circular(20)),
           child: SizedBox(
             width: MediaQuery.of(context).size.width * 0.7,
             child: Stack(
@@ -105,7 +107,7 @@ class RoutineCard extends StatelessWidget {
                         SizedBox(
                           width: 5,
                         ),
-                        Text(routine.estimatedTime),
+                        Text(routine.estimatedTime.toString() + ' min'),
                         SizedBox(
                           width: 5,
                         ),

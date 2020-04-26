@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:workout/screens/home.dart';
 import 'package:workout/screens/screens.dart';
+import 'package:workout/services/services.dart';
+import 'package:workout/shared/neumorphic.dart';
 
 class TabScreen extends StatefulWidget {
   const TabScreen({Key key}) : super(key: key);
@@ -14,7 +17,7 @@ class _TabScreenState extends State<TabScreen> {
   int _currentIndex = 0;
   final List<Widget> tabs = [
     HomeScreen(),
-    Center(child: Text("Progress Screen")),
+    ProgressTab(),
     ProfileRoute(),
     CreateRoutineRoute(),
   ];

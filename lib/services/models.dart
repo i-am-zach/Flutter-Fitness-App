@@ -29,26 +29,81 @@ class Exercise {
   }
 }
 
+class Report {
+  String uid;
+  List<CompletionReport> completed;
+
+  Report({this.uid, this.completed});
+
+  Report.fromData(Map data) {
+    uid = data['uid'];
+    completed = [];
+    List repoMap = data['completed'];
+    for (int i = 0; i < repoMap.length; i++) {
+      CompletionReport completionReport = CompletionReport.fromData(repoMap[i]);
+      completed.add(completionReport);
+    }
+  }
+
+  Map<String, dynamic> deserialize() => {
+        'uid': uid,
+        'completed': completed
+            .map((completedReport) => completedReport.deserialize())
+            .toList()
+      };
+}
+
+class CompletionReport {
+  Timestamp logged;
+  Routine routine;
+
+  CompletionReport({this.logged, this.routine});
+
+  CompletionReport.fromData(Map data) {
+    logged = data['logged'];
+    routine = Routine.fromData(data['routine']);
+  }
+
+  Map<String, dynamic> deserialize() => {
+        'logged': logged,
+        'routine': routine.deserialize(),
+      };
+}
+
 class Routine {
+  String id;
   String title;
   String description;
-  String estimatedTime;
+  int estimatedTime;
   List exercises;
   String author;
 
   Routine(
-      {this.title,
+      {this.id,
+      this.title,
       this.exercises,
       this.description,
       this.author,
       this.estimatedTime});
 
   Routine.fromData(Map data) {
+    id = data['id'];
     title = data['title'];
     description = data['description'];
     exercises = data['exercises'];
     author = data['author'];
     estimatedTime = data['estimatedTime'];
+  }
+
+  Map<String, dynamic> deserialize() {
+    return {
+      'id': id,
+      'title': title,
+      'description': description,
+      'exercises': exercises,
+      'author': author,
+      'estimatedTime': estimatedTime,
+    };
   }
 }
 

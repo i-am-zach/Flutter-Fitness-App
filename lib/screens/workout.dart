@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:workout/screens/screens.dart';
 import 'package:workout/services/db.dart';
 import 'package:workout/services/models.dart';
@@ -25,7 +26,9 @@ class WorkoutScreen extends StatelessWidget {
                     pageController: PAGE_CONTROLLER,
                   );
                 } else if (index > routine.exercises.length) {
-                  return CompleteScreen();
+                  return CompleteScreen(
+                    routine: routine,
+                  );
                 } else {
                   return ExerciseScreen(
                     exerciseStream:
@@ -37,17 +40,6 @@ class WorkoutScreen extends StatelessWidget {
                 }
               })),
     );
-  }
-}
-
-class CompleteScreen extends StatelessWidget {
-  const CompleteScreen({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container();
   }
 }
 
@@ -73,7 +65,7 @@ class BeginScreen extends StatelessWidget {
           Row(mainAxisAlignment: MainAxisAlignment.center, children: [
             NeumorphicButton(
               onTap: () {
-                Navigator.popAndPushNamed(context, '/home');
+                Navigator.pop(context);
               },
               text: Text("Go Back"),
               constraints: BoxConstraints(minWidth: 100),
@@ -91,6 +83,61 @@ class BeginScreen extends StatelessWidget {
           ]),
         ],
       ),
+    );
+  }
+}
+
+class CompleteScreen extends StatelessWidget {
+  final ReportService reportService = ReportService();
+  final Routine routine;
+
+  CompleteScreen({this.routine});
+
+  @override
+  Widget build(BuildContext context) {
+    User user = Provider.of<User>(context);
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        NeumorphicCard(
+          neumorphicData: NeumorphicData(
+              level: 10,
+              padding: EdgeInsets.all(20),
+              borderRadius: BorderRadius.circular(20)),
+          child: SizedBox(
+            child: Column(
+              children: <Widget>[
+                Text("Awesome Job!",
+                    style: TextStyle(
+                      fontSize: 44,
+                      fontWeight: FontWeight.w300,
+                    )),
+                Text("You completed \"${routine.title}\"",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.w300,
+                    )),
+              ],
+            ),
+          ),
+        ),
+        SizedBox(
+          height: 50,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            NeumorphicButton(
+              onTap: () {
+                reportService.logCompletedRoutine(user, routine);
+                Navigator.popAndPushNamed(context, '/home');
+              },
+              text: Text("Save your progress!"),
+            )
+          ],
+        )
+      ],
     );
   }
 }
