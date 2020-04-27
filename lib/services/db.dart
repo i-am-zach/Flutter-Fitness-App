@@ -79,6 +79,9 @@ class UserData<T> {
           .document(user.uid)
           .snapshots()
           .switchMap((userData) {
+        if (userData.data['routines'] == null) {
+          return Stream.empty();
+        }
         List routines = userData.data['routines'];
         return _db
             .collection('routines')

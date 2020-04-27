@@ -44,7 +44,7 @@ class AuthService {
   }
 
   updateUserData(FirebaseUser user) {
-    _db.collection('users').document(user.uid).setData({
+    _db.collection('users').document(user.uid).updateData({
       'uid': user.uid,
       'name': user.displayName,
       'lastActivity': DateTime.now(),

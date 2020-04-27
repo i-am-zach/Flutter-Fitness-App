@@ -39,12 +39,16 @@ class HomeScreen extends StatelessWidget {
               height: 10,
             ),
             Container(
-              height: 200,
-              child: ListView(
+              height: 240,
+              child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                children: <Widget>[
-                  RoutineCard(routine: userRoutines[0]),
-                ],
+                itemCount: userRoutines.length,
+                itemBuilder: (context, index) => Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: RoutineCard(
+                    routine: userRoutines[index],
+                  ),
+                ),
               ),
             )
           ],
@@ -87,7 +91,7 @@ class RoutineCard extends StatelessWidget {
                         routine.title,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
-                          fontSize: 36,
+                          fontSize: 30,
                           fontWeight: FontWeight.w900,
                         ),
                       ),

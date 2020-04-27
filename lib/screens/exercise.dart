@@ -128,9 +128,9 @@ class WorkoutIcon extends StatelessWidget {
               child: Image(
                   image: AssetImage("assets/icons/leg@3x.png"), color: _color)),
         );
-      case "arm":
+      case "arms":
         return FractionallySizedBox(
-          widthFactor: 0.8,
+          widthFactor: 0.65,
           child: Center(
               child: Image(
                   image: AssetImage("assets/icons/arm@3x.png"), color: _color)),
