@@ -23,7 +23,7 @@ class AuthService {
       AuthResult result = await _auth.signInWithCredential(credential);
       FirebaseUser user = result.user;
 
-      this.updateUserData(user);
+      await this.updateUserData(user);
       return user;
     } catch (error) {
       print(error);
@@ -35,7 +35,7 @@ class AuthService {
     AuthResult result = await _auth.signInAnonymously();
     FirebaseUser user = result.user;
 
-    this.updateUserData(user);
+    await this.updateUserData(user);
     return user;
   }
 
@@ -43,12 +43,12 @@ class AuthService {
     return _auth.signOut();
   }
 
-  updateUserData(FirebaseUser user) {
-    _db.collection('users').document(user.uid).updateData({
+  Future<void> updateUserData(FirebaseUser user) {
+    return _db.collection('users').document(user.uid).setData({
       'uid': user.uid,
       'name': user.displayName,
       'lastActivity': DateTime.now(),
-    });
+    }, merge: true);
   }
 
   get loggedIn {

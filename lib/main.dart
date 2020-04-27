@@ -11,6 +11,7 @@ void main() {
 
 class MyApp extends StatelessWidget {
   final AuthService _auth = AuthService();
+  final GlobalData _globalData = GlobalData();
   Color _color = Color(0XFFEFF3F6);
 
   // This widget is the root of your application.
@@ -23,6 +24,9 @@ class MyApp extends StatelessWidget {
         ),
         StreamProvider<List<Routine>>(
           create: (context) => Global.userData.routineStream,
+        ),
+        StreamProvider<GlobalRoutineData>(
+          create: (context) => _globalData.globalRoutineData,
         )
       ],
       child: MaterialApp(

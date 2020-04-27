@@ -112,6 +112,7 @@ class User {
   String uid;
   Timestamp lastActivity;
   List routines;
+  List created;
   String description;
 
   User({this.name, this.uid, this.lastActivity, this.routines});
@@ -121,5 +122,16 @@ class User {
     uid = data['uid'];
     lastActivity = data['lastActivity'];
     routines = data['routines'];
+    created = data['created'];
+  }
+}
+
+class GlobalRoutineData {
+  List discover;
+
+  GlobalRoutineData({this.discover});
+
+  GlobalRoutineData.fromData(Map<String, dynamic> data) {
+    discover = data['discover'];
   }
 }

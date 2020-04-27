@@ -62,6 +62,7 @@ class UserData<T> {
   UserData({this.collection});
 
   Stream<T> get documentStream {
+    print("Called document stream");
     return _auth.onAuthStateChanged.switchMap((user) {
       if (user != null) {
         Document<T> doc = Document<T>(path: "$collection/" + user.uid);
@@ -70,6 +71,30 @@ class UserData<T> {
         return Stream<T>.value(null);
       }
     });
+  }
+
+  List<Stream<Routine>> createdRoutinesBy(User user) {
+    if (user.created != null) {
+      return user.created.map((routine_id) {
+        return _db
+            .collection('routines')
+            .document(routine_id)
+            .snapshots()
+            .map((snap) => Routine.fromData(snap.data));
+      }).toList();
+    }
+  }
+
+  List<Stream<Routine>> followingRoutinesBy(User user) {
+    if (user.routines != null) {
+      return user.routines.map((routine_id) {
+        return _db
+            .collection('routines')
+            .document(routine_id)
+            .snapshots()
+            .map((snap) => Routine.fromData(snap.data));
+      }).toList();
+    }
   }
 
   Stream<List<Routine>> get routineStream {
@@ -247,5 +272,33 @@ class ReportAggregation {
       }
     });
     return maxR;
+  }
+}
+
+class GlobalData {
+  final Firestore _db = Firestore.instance;
+
+  void log() {
+    this.globalRoutineData.listen((globalRoutine) => print(globalRoutine));
+  }
+
+  Stream<GlobalRoutineData> get globalRoutineData {
+    DocumentReference routineDataRef =
+        _db.collection('global').document('routines');
+    return routineDataRef
+        .snapshots()
+        .map((snapshot) => GlobalRoutineData.fromData(snapshot.data));
+  }
+
+  List<Stream<Routine>> getDiscoverRoutines(GlobalRoutineData gr) {
+    return gr.discover
+        .map((routineId) => _db
+                .collection('routines')
+                .document(routineId)
+                .snapshots()
+                .map((snapshot) {
+              return Routine.fromData(snapshot.data);
+            }))
+        .toList();
   }
 }
