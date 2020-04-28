@@ -151,8 +151,7 @@ class ProgressTab extends StatelessWidget {
                             widthFactor: 0.8,
                             child: Image(
                                 color: _primaryColor,
-                                image: AssetImage(
-                                    "assets/icons/trimmed_dumbell@3x.png")),
+                                image: AssetImage("assets/icons/dumbbell.png")),
                           ),
                           title: "Favorite Workout",
                           subtitle: "${favoriteRoutine.title}",

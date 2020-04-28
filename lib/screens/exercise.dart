@@ -115,32 +115,31 @@ class WorkoutIcon extends StatelessWidget {
     switch (type) {
       case "jump":
         return FractionallySizedBox(
-          widthFactor: 0.6,
+          heightFactor: 0.75,
           child: Center(
               child: Image(
-                  image: AssetImage("assets/icons/jump@3x.png"),
-                  color: _color)),
+                  image: AssetImage("assets/icons/jump.png"), color: _color)),
         );
       case "legs":
         return FractionallySizedBox(
-          widthFactor: 0.7,
+          heightFactor: 0.7,
           child: Center(
               child: Image(
-                  image: AssetImage("assets/icons/leg@3x.png"), color: _color)),
+                  image: AssetImage("assets/icons/leg.png"), color: _color)),
         );
       case "arms":
         return FractionallySizedBox(
-          widthFactor: 0.65,
+          heightFactor: 0.75,
           child: Center(
               child: Image(
-                  image: AssetImage("assets/icons/arm@3x.png"), color: _color)),
+                  image: AssetImage("assets/icons/arm.png"), color: _color)),
         );
       default:
         return FractionallySizedBox(
           widthFactor: 0.8,
           child: Center(
               child: Image(
-                  image: AssetImage("assets/icons/dumbell@3x.png"),
+                  image: AssetImage("assets/icons/dumbbell.png"),
                   color: _color)),
         );
     }
